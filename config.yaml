@@ -1,0 +1,22 @@
+# User configuration — edit these paths before running
+excel:
+  watch_path: "./sample_data/sample_itsm.xlsx"   # path to your Excel file
+  sheets_to_skip:
+    - "Cover Page"
+    - "ITSM_Score_Card"
+  kpi_sheet_name: "Cover Page"
+
+ai:
+  provider: "ollama"           # options: "ollama" or "azure_openai"
+  model: "phi3"                # ollama model name (phi3 is fast and small)
+  temperature: 0.3
+  max_tokens: 1000
+
+output:
+  folder: "./output"
+  filename_prefix: "ITSM_Report"
+
+logging:
+  level: "INFO"
+  log_file: "./output/pipeline.log"
+

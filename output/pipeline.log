@@ -1,0 +1,275 @@
+[2026-04-07 12:49:41] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 12:49:41] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 12:49:42] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 12:49:42] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-07 12:49:42] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-07 12:49:44] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-07 12:49:44] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-07 12:49:44] [INFO] [orchestrator] No suitable chart for 'Change'.
+[2026-04-07 12:49:44] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-07 12:49:44] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-07 12:49:44] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-07 12:49:45] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-07 12:49:45] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-07 12:49:45] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-07 12:49:45] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260407.pptx
+Duration         : 3.8 seconds
+[2026-04-07 12:51:25] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 12:51:25] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 12:51:26] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 12:51:26] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generated chart for 'Change'.
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-07 12:51:26] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-07 12:51:27] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-07 12:51:27] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-07 12:51:27] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-07 12:51:27] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260407.pptx
+Duration         : 1.5 seconds
+[2026-04-07 13:12:12] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 13:12:12] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 13:12:12] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 13:12:12] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-07 13:12:12] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-07 13:13:33] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-07 13:13:33] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-07 13:15:47] [INFO] [orchestrator] Generated chart for 'Change'.
+[2026-04-07 13:15:47] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-07 13:17:31] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-07 13:17:31] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-07 13:19:40] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-07 13:19:40] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-07 13:21:01] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-07 13:21:01] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260407.pptx
+Duration         : 529.0 seconds
+[2026-04-07 21:08:32] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 21:08:32] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 21:08:33] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 21:08:33] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-07 21:08:33] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-07 21:08:35] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-07 21:08:35] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-07 21:08:36] [INFO] [orchestrator] Generated chart for 'Change'.
+[2026-04-07 21:08:36] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-07 21:08:36] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-07 21:08:36] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-07 21:08:37] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-07 21:08:37] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-07 21:08:38] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-07 21:08:38] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260407.pptx
+Duration         : 5.7 seconds
+[2026-04-07 21:08:55] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 21:08:55] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 21:08:56] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 21:08:56] [INFO] [orchestrator] No sheet changes detected. PPT not updated.
+[2026-04-07 21:21:27] [INFO] [orchestrator] Starting pipeline.
+[2026-04-07 21:21:27] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-07 21:21:27] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-07 21:21:27] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-07 21:21:27] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-07 21:21:28] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-07 21:21:28] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260407.pptx
+Duration         : 1.2 seconds
+[2026-04-08 00:03:22] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 00:03:22] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 00:03:23] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 00:03:23] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 00:03:23] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-08 00:03:27] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-08 00:03:27] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-08 00:03:28] [INFO] [orchestrator] Generated chart for 'Change'.
+[2026-04-08 00:03:28] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 00:03:29] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 00:03:29] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-08 00:03:30] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-08 00:03:30] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-08 00:03:32] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-08 00:03:32] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 9.6 seconds
+[2026-04-08 00:38:44] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 00:38:44] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 00:38:44] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 00:38:44] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 00:38:44] [INFO] [orchestrator] Generating AI analysis for sheet 'MIM' (1 rows).
+[2026-04-08 00:38:45] [INFO] [orchestrator] Generated chart for 'MIM'.
+[2026-04-08 00:38:45] [INFO] [orchestrator] Generating AI analysis for sheet 'Change' (1 rows).
+[2026-04-08 00:38:46] [INFO] [orchestrator] Generated chart for 'Change'.
+[2026-04-08 00:38:46] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 00:38:47] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 00:38:47] [INFO] [orchestrator] Generating AI analysis for sheet 'CMDB' (1 rows).
+[2026-04-08 00:38:48] [INFO] [orchestrator] Generated chart for 'CMDB'.
+[2026-04-08 00:38:48] [INFO] [orchestrator] Generating AI analysis for sheet 'NOC' (1 rows).
+[2026-04-08 00:38:48] [INFO] [orchestrator] Generated chart for 'NOC'.
+[2026-04-08 00:38:48] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 5
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 4.2 seconds
+[2026-04-08 00:50:51] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 00:50:51] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 00:50:51] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 00:50:51] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 00:50:51] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 00:50:53] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 00:50:53] [ERROR] [orchestrator] Pipeline failed: [Errno 13] Permission denied: './output\\ITSM_Report_20260408.pptx'
+[2026-04-08 00:52:41] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 00:52:41] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 00:52:41] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 00:52:41] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 00:52:41] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 00:52:42] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 00:52:42] [ERROR] [orchestrator] Pipeline failed: [Errno 13] Permission denied: './output\\ITSM_Report_20260408.pptx'
+[2026-04-08 00:56:41] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 00:56:41] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 00:56:42] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 00:56:42] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 00:56:42] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 00:59:25] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 00:59:25] [ERROR] [orchestrator] Pipeline failed: [Errno 13] Permission denied: './output\\ITSM_Report_20260408.pptx'
+[2026-04-08 01:00:15] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:00:15] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:00:15] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:00:15] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:00:15] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:02:55] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:02:56] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 160.9 seconds
+[2026-04-08 01:07:04] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:07:04] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:07:04] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:07:04] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:07:04] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:09:02] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:09:02] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 118.4 seconds
+[2026-04-08 01:14:16] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:14:16] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:14:16] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:14:16] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:14:16] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:16:29] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:16:29] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 133.6 seconds
+[2026-04-08 01:18:47] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:18:47] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:18:47] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:18:47] [INFO] [orchestrator] No sheet changes detected. PPT not updated.
+[2026-04-08 01:21:09] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:21:09] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:21:09] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:21:09] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:21:09] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:23:26] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:23:26] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 136.8 seconds
+[2026-04-08 01:39:21] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:39:21] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:39:21] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:39:21] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:39:21] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:41:24] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:41:24] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 123.7 seconds
+[2026-04-08 01:41:45] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:41:45] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:41:45] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:41:45] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:41:45] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:43:30] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:43:30] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 104.8 seconds
+[2026-04-08 01:43:52] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:43:52] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:43:52] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:43:52] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:43:52] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:45:37] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:45:37] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 105.2 seconds
+[2026-04-08 01:49:56] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 01:49:56] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 01:49:56] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 01:49:56] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 01:49:56] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 01:51:50] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 01:51:50] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 114.2 seconds
+[2026-04-08 07:45:29] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 07:45:29] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 07:45:29] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 07:45:29] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 07:45:29] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 07:48:16] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 07:48:16] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 167.5 seconds
+[2026-04-08 07:52:41] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 07:52:41] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 07:52:41] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 07:52:41] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 07:52:41] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 07:54:22] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 07:54:22] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 101.1 seconds
+[2026-04-08 07:58:26] [INFO] [orchestrator] Starting pipeline.
+[2026-04-08 07:58:26] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-04-08 07:58:27] [INFO] [orchestrator] Parsed KPI reference for 5 groups from 'Cover Page'.
+[2026-04-08 07:58:27] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-04-08 07:58:27] [INFO] [orchestrator] Generating AI analysis for sheet 'Problem' (1 rows).
+[2026-04-08 08:00:31] [INFO] [orchestrator] Generated chart for 'Problem'.
+[2026-04-08 08:00:31] [INFO] [orchestrator] ✅ Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 1
+Output saved to  : ./output\ITSM_Report_20260408.pptx
+Duration         : 124.9 seconds
