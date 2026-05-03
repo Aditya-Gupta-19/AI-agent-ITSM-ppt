@@ -1,9 +1,11 @@
 import io
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+from chart_renderers import auto_select, get_renderer
 
 
 class ChartGenerator:
@@ -172,4 +174,61 @@ class ChartGenerator:
         plt.close(fig)
         buf.seek(0)
         return buf.getvalue()
+
+    def generate_for_sheet(
+        self,
+        sheet_name: str,
+        df: pd.DataFrame,
+        column_types: Dict[str, str],
+        report_config: dict,
+    ) -> List[dict]:
+        """
+        Returns list of chart dicts:
+          [{"chart_id": str, "png_bytes": bytes|None, "position": str, "title": str}]
+        Falls back to auto_select when no config entry for sheet.
+        """
+        team_config = report_config.get(sheet_name, {})
+        charts_spec = team_config.get("charts", [])
+
+        if not charts_spec:
+            auto_type = auto_select(df, column_types)
+            charts_spec = [{"type": auto_type, "columns": "auto"}]
+
+        positions = ["right", "bottom_left", "bottom_right",
+                     "third_left", "third_mid", "third_right"]
+        results = []
+
+        # For 3+ charts, use a shorter figsize so they all fit on the slide
+        figsize_hint = (9, 1.8) if len(charts_spec) >= 3 else (9, 2.8)
+
+        for i, spec in enumerate(charts_spec):
+            chart_type = spec.get("type", "auto")
+            if chart_type == "auto":
+                chart_type = auto_select(df, column_types)
+
+            position = positions[i] if i < len(positions) else "right"
+            title = spec.get("title", f"{sheet_name} — Chart {i + 1}")
+
+            if chart_type == "none":
+                results.append({
+                    "chart_id": f"chart_{i}",
+                    "png_bytes": None,
+                    "position": position,
+                    "title": title,
+                    "chart_type": "none",
+                })
+                continue
+
+            renderer = get_renderer(chart_type)
+            png = renderer.render(df, {**spec, "column_types": column_types,
+                                        "figsize_hint": figsize_hint})
+            results.append({
+                "chart_id": f"chart_{i}",
+                "png_bytes": png,
+                "position": position,
+                "title": title,
+                "chart_type": chart_type,
+            })
+
+        return results
 

@@ -19,7 +19,15 @@ def run(
             ai_output=item["ai_output"],
             kpi_rows=item.get("kpi_rows") or [],
             chart_bytes=item.get("chart_bytes"),
+            charts=item.get("charts_list"),
+            summary_mode=item.get("summary_mode", "ai_write"),
+            df=item.get("df"),
+            kpi_definitions=item.get("kpi_definitions", []),
+            column_types=item.get("column_types", {}),
+            layout=item.get("layout", "standard"),
+            multigroup_data=item.get("multigroup_data"),
+            rag_thresholds=item.get("rag_thresholds"),
+            parsed_sections=item.get("parsed_sections"),
         )
 
     return pptx_builder.save(output_path)
-

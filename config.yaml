@@ -4,13 +4,17 @@ excel:
   sheets_to_skip:
     - "Cover Page"
     - "ITSM_Score_Card"
+    - "Sheet1"
+    - "Report_Config"
   kpi_sheet_name: "Cover Page"
+  duplicate_detection: true
+  report_config_sheet: "Report_Config"
 
 ai:
   provider: "ollama"           # options: "ollama" or "azure_openai"
-  model: "phi3"                # ollama model name (phi3 is fast and small)
+  model: "phi3"                # faster alternatives: "phi3:mini", "llama3.2:3b", "gemma2:2b"
   temperature: 0.3
-  max_tokens: 1000
+  max_tokens: 600              # 600 for 4-6 sentence summary + 3 achievements + 3 actions
 
 output:
   folder: "./output"
@@ -19,4 +23,21 @@ output:
 logging:
   level: "INFO"
   log_file: "./output/pipeline.log"
+
+summary:
+  default_mode: "ai_write"
+  excel_summary_max_chars: 500
+
+charts:
+  default_type: "auto"
+  fallback_to_table: true
+  table_max_rows: 4
+  mufg_colors:
+    - "#CC0000"   # MUFG Red (primary)
+    - "#595757"   # MUFG Gray
+    - "#404040"   # Dark Gray
+    - "#1F3864"   # Dark Blue (secondary)
+    - "#E63333"   # Light Red
+    - "#808080"   # Medium Gray
+    - "#2E75B6"   # Mid Blue (secondary)
 

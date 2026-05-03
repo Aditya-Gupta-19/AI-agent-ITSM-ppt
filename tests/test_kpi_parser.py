@@ -28,6 +28,22 @@ def test_evaluates_pass():
     assert results[0]["status"] == "PASS"
 
 
+def test_kpi_evaluate_percent_decimal_display():
+    parser = KPIParser()
+    thresholds = {
+        "SLA Compliance (>95%)": {
+            "operator": ">", "value": 95, "unit": "%",
+            "original_header": "SLA Compliance (>95%)",
+        }
+    }
+    row_data = {"SLA Compliance (>95%)": 0.97}
+    column_types = {"SLA Compliance (>95%)": "percent_decimal"}
+    results = parser.evaluate_kpis(row_data=row_data, thresholds=thresholds,
+                                   column_types=column_types)
+    assert results[0]["status"] == "PASS"
+    assert abs(results[0]["actual_value"] - 97.0) < 0.01
+
+
 def test_evaluates_fail():
     parser = KPIParser()
     thresholds = {

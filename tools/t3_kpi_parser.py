@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -79,7 +79,12 @@ class KPIParser:
 
         return thresholds
 
-    def evaluate_kpis(self, row_data: Dict[str, Any], thresholds: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def evaluate_kpis(
+        self,
+        row_data: Dict[str, Any],
+        thresholds: Dict[str, Dict[str, Any]],
+        column_types: Optional[Dict[str, str]] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Compares actual values against thresholds.
         Returns list of:
@@ -88,25 +93,44 @@ class KPIParser:
 
         results: List[Dict[str, Any]] = []
 
-        def operator_eval(actual: float, operator: str, target: float) -> bool:
+        def operator_eval(actual: float, operator: str, target: float) -> str:
+            """Returns 'PASS', 'AMBER', or 'FAIL'."""
             op = operator
-            # Normalize Unicode operators.
             if op == "≥":
                 op = ">="
             if op == "≤":
                 op = "<="
 
+            # Allow ±2% tolerance for AMBER (near-miss / borderline)
+            tol = abs(target) * 0.02 if target != 0 else 0.5
+
             if op == ">":
-                return actual > target
+                if actual >= target:       # exact match or above = PASS
+                    return "PASS"
+                if actual >= target - tol:  # within 2% below = AMBER
+                    return "AMBER"
+                return "FAIL"
             if op == "<":
-                return actual < target
+                if actual <= target:
+                    return "PASS"
+                if actual <= target + tol:
+                    return "AMBER"
+                return "FAIL"
             if op == ">=":
-                return actual >= target
+                if actual >= target:
+                    return "PASS"
+                if actual >= target - tol:
+                    return "AMBER"
+                return "FAIL"
             if op == "<=":
-                return actual <= target
+                if actual <= target:
+                    return "PASS"
+                if actual <= target + tol:
+                    return "AMBER"
+                return "FAIL"
             if op == "==":
-                return actual == target
-            return False
+                return "PASS" if actual == target else "FAIL"
+            return "FAIL"
 
         for header, t in thresholds.items():
             operator = t["operator"]
@@ -171,17 +195,23 @@ class KPIParser:
                 else:
                     actual_cmp = actual_num
 
-            status = "PASS" if operator_eval(actual_cmp, operator, target_cmp) else "FAIL"
+            status = operator_eval(actual_cmp, operator, target_cmp)
 
             # Produce a cleaner KPI name (remove threshold parentheses when possible).
             kpi_name = header
             if "(" in header:
                 kpi_name = header.split("(")[0].strip()
 
+            # For display: scale percent_decimal columns (*100) when not already scaled.
+            display_value = actual_cmp if unit == "%" else actual_num
+            if column_types and column_types.get(header) == "percent_decimal":
+                if display_value <= 1.0:
+                    display_value = display_value * 100.0
+
             results.append(
                 {
                     "kpi_name": kpi_name,
-                    "actual_value": actual_cmp if unit == "%" else actual_num,
+                    "actual_value": display_value,
                     "threshold": f"{operator}{target}{unit}",
                     "status": status,
                 }

@@ -7,6 +7,8 @@ def run(
     ai_engine: Any,
     kpi_dict: Dict[str, Any],
     logger: Any,
+    excel_summary: str = "",
+    summary_mode: str = "ai_write",
 ) -> Dict[str, Any]:
     """
     Workflow 3: AI summary + insights per sheet.
@@ -25,5 +27,8 @@ def run(
     rows = df.to_dict(orient="records")
 
     logger.info(f"Generating AI analysis for sheet '{sheet_name}' ({len(rows)} rows).")
-    return ai_engine.generate_analysis(sheet_name, headers, rows, kpi_dict)
-
+    return ai_engine.generate_analysis(
+        sheet_name, headers, rows, kpi_dict,
+        excel_summary=excel_summary,
+        summary_mode=summary_mode,
+    )

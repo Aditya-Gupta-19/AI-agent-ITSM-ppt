@@ -11,7 +11,7 @@ class AIEngine:
         ai_cfg = config.get("ai", {}) if isinstance(config, dict) else {}
         self.model = ai_cfg.get("model") or config.get("model") or "phi3"
         self.temperature = ai_cfg.get("temperature", 0.3)
-        self.max_tokens = ai_cfg.get("max_tokens", 1000)
+        self.max_tokens = ai_cfg.get("max_tokens", 600)
 
     def generate_analysis(
         self,
@@ -19,6 +19,8 @@ class AIEngine:
         headers: List[str],
         rows: List[Dict[str, Any]],
         kpi_dict: Dict[str, Any],
+        excel_summary: str = "",
+        summary_mode: str = "ai_write",
     ) -> Dict[str, Any]:
         """
         Builds prompt and calls AI. Returns structured dict.
@@ -28,22 +30,25 @@ class AIEngine:
         """
 
         base_system = (
-            "You are a senior IT service management analyst. "
-            "You analyze operational data for IT teams. "
+            "You are a senior IT service management analyst at a financial institution (MUFG). "
+            "You analyze weekly operational data for ITSM teams and produce executive-ready reports. "
             "IMPORTANT: Always respond with valid JSON only. "
             "No explanation, no markdown, no text outside the JSON object."
         )
 
         kpi_reference = kpi_dict.get(sheet_name, {}) if isinstance(kpi_dict, dict) else {}
         data_profile = self._build_data_profile(headers, rows)
-        user_prompt = self._build_user_prompt(sheet_name, headers, rows, kpi_reference, data_profile)
+        user_prompt = self._build_user_prompt(
+            sheet_name, headers, rows, kpi_reference, data_profile,
+            excel_summary=excel_summary, summary_mode=summary_mode,
+        )
 
         try:
             text = self._call_ollama(base_system, user_prompt)
             parsed = self._parse_json_or_none(text)
             if not self._validate_output(parsed):
                 raise ValueError("Invalid JSON structure")
-            return parsed
+            result = parsed
         except Exception:
             # Retry once with stricter prompt.
             try:
@@ -53,9 +58,15 @@ class AIEngine:
                 parsed2 = self._parse_json_or_none(text2)
                 if not self._validate_output(parsed2):
                     raise ValueError("Invalid JSON structure after retry")
-                return parsed2
+                result = parsed2
             except Exception:
-                return self._fallback_analysis(sheet_name, rows, data_profile)
+                result = self._fallback_analysis(sheet_name, rows, data_profile)
+
+        # use_excel mode: always replace AI summary with the team-provided text.
+        if summary_mode == "use_excel" and excel_summary:
+            result["summary"] = excel_summary
+
+        return result
 
     def _build_user_prompt(
         self,
@@ -64,20 +75,46 @@ class AIEngine:
         rows: List[Dict[str, Any]],
         kpi_reference: Dict[str, Any],
         data_profile: Dict[str, Any],
+        excel_summary: str = "",
+        summary_mode: str = "ai_write",
     ) -> str:
-        # Keep prompts compact: cap row count if many rows.
-        limited_rows = rows[:20]
-        return (
+        # Send only the last 2 rows (most recent data) to keep prompts short and fast.
+        recent_rows = rows[-2:] if len(rows) >= 2 else rows
+        base = (
             f"Group: {sheet_name}\n"
             f"Columns: {headers}\n"
-            f"Data: {limited_rows}\n"
+            f"Recent data (last {len(recent_rows)} rows): {recent_rows}\n"
             f"KPI reference: {kpi_reference}\n"
             f"Data profile: {data_profile}\n"
-            "Write a professional summary in 3-5 complete sentences. "
-            "The summary must mention: performance level, strongest metric, weakest metric/risk, "
-            "and one concrete recommendation.\n"
-            "Return ONLY JSON with keys: summary, kpi_evaluation, key_achievements, insights.\n"
         )
+
+        if summary_mode == "use_excel":
+            base += (
+                "\nGenerate ONLY kpi_evaluation, key_achievements, insights, overall_rag. "
+                "Set \"summary\" to empty string.\n"
+            )
+        elif summary_mode == "ai_refine" and excel_summary:
+            base += (
+                f"\nRefine this team-provided summary for executive use. "
+                f"Keep all facts. Max 3 sentences. Professional tone.\n"
+                f"Original: {excel_summary[:500]}\n"
+            )
+        elif summary_mode == "ai_write" and excel_summary:
+            base += f"\nTeam context (use as reference for your summary): {excel_summary[:500]}\n"
+
+        base += (
+            "Write a comprehensive 4-6 sentence weekly status update covering: "
+            "(1) overall team performance and trend this week, "
+            "(2) what the team worked on and accomplished, "
+            "(3) key metrics and whether targets were met, "
+            "(4) any risks or issues, and (5) outlook for next week. "
+            "Be specific — include actual numbers from the data.\n"
+            "key_achievements: list exactly 3 specific accomplishments with actual numbers or context.\n"
+            "insights: list exactly 3 recommended actions or focus areas for next week.\n"
+            "Return ONLY JSON: {\"summary\": \"\", \"kpi_evaluation\": [], "
+            "\"key_achievements\": [], \"insights\": [], \"overall_rag\": \"GREEN|AMBER|RED\"}\n"
+        )
+        return base
 
     def _call_ollama(self, system_prompt: str, user_prompt: str) -> str:
         response = ollama.chat(
@@ -126,9 +163,11 @@ class AIEngine:
             return False
         if not isinstance(data["insights"], list):
             return False
-        # Minimal type checks for robustness.
         if not isinstance(data["summary"], str):
             return False
+        # Sanitize optional overall_rag field.
+        if "overall_rag" in data and data["overall_rag"] not in ("GREEN", "AMBER", "RED"):
+            data["overall_rag"] = "AMBER"
         return True
 
     def _to_float(self, value: Any) -> Optional[float]:
@@ -200,5 +239,6 @@ class AIEngine:
                 "AI analysis unavailable. Rule-based summary was applied.",
                 "Review low-performing KPIs and assign action owners.",
             ],
+            "overall_rag": "AMBER",
         }
 
