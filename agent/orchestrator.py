@@ -3,14 +3,14 @@ import re
 import time
 import json
 import hashlib
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from tools.t1_file_watcher import ExcelFileWatcher  # noqa: F401
 from tools.t2_excel_reader import ExcelReader
 from tools.t3_kpi_parser import KPIParser
-from tools.t4_ai_engine import AIEngine
+from tools.t4_ai_engine import RuleEngine
 from tools.t5_chart_generator import ChartGenerator
 from tools.t6_pptx_builder import PPTXBuilder
 from tools.t8_logger import get_logger
@@ -29,7 +29,7 @@ class ReportOrchestrator:
         logger: Any = None,
         excel_reader: Optional[ExcelReader] = None,
         kpi_parser: Optional[KPIParser] = None,
-        ai_engine: Optional[AIEngine] = None,
+        rule_engine: Optional[RuleEngine] = None,
         chart_generator: Optional[ChartGenerator] = None,
         pptx_builder: Optional[PPTXBuilder] = None,
     ):
@@ -40,7 +40,7 @@ class ReportOrchestrator:
         self.logger = logger or get_logger("orchestrator", log_file=log_file)
         self.excel_reader = excel_reader or ExcelReader(config)
         self.kpi_parser = kpi_parser or KPIParser()
-        self.ai_engine = ai_engine or AIEngine(config)
+        self.rule_engine = rule_engine or RuleEngine(config)
         self.chart_generator = chart_generator or ChartGenerator()
         self.pptx_builder = pptx_builder or PPTXBuilder()
 
@@ -153,23 +153,20 @@ class ReportOrchestrator:
         if layout == "multigroup":
             multigroup_data = self.excel_reader.read_multigroup_data(df)
 
-        with ThreadPoolExecutor(max_workers=2) as pool:
-            fut_ai = pool.submit(
-                w3_run, sheet_name=sheet_name, sheet_info=sheet_info,
-                ai_engine=self.ai_engine, kpi_dict=kpi_dict, logger=self.logger,
-                excel_summary=excel_summary, summary_mode=summary_mode,
+        ai_output = w3_run(
+            sheet_name=sheet_name, sheet_info=sheet_info,
+            ai_engine=self.rule_engine, kpi_dict=kpi_dict, logger=self.logger,
+            excel_summary=excel_summary, summary_mode=summary_mode,
+            kpi_rows=kpi_rows,
+        )
+        if layout == "multigroup":
+            chart_bytes, charts_list = None, []
+        else:
+            chart_bytes, charts_list = w4_run(
+                sheet_name=sheet_name, sheet_info=sheet_info,
+                chart_generator=self.chart_generator, logger=self.logger,
+                report_config=report_config,
             )
-            if layout == "multigroup":
-                chart_bytes, charts_list = None, []
-                ai_output = fut_ai.result()
-            else:
-                fut_chart = pool.submit(
-                    w4_run, sheet_name=sheet_name, sheet_info=sheet_info,
-                    chart_generator=self.chart_generator, logger=self.logger,
-                    report_config=report_config,
-                )
-                ai_output = fut_ai.result()
-                chart_bytes, charts_list = fut_chart.result()
 
         overall_rag = ai_output.get("overall_rag", "AMBER")
         all_kpi_rows = kpi_rows + context_rows + [{

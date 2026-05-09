@@ -1607,3 +1607,373 @@ Sheets processed : 7
 Sheets skipped   : 2
 Output saved to  : ./output\ITSM_Report_20260503.pptx
 Duration         : 3792.9 seconds
+[2026-05-03 16:09:31] [INFO] [orchestrator] Starting pipeline.
+[2026-05-03 16:09:31] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-03 16:09:32] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-03 16:09:32] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-03 16:09:32] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-03 16:09:32] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-03 16:09:33] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-03 16:09:34] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-03 16:09:35] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260503.pptx
+Duration         : 3.1 seconds
+[2026-05-03 16:17:13] [INFO] [orchestrator] Starting pipeline.
+[2026-05-03 16:17:13] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-03 16:17:13] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-03 16:17:13] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-03 16:17:13] [INFO] [orchestrator] No sheet changes detected. PPT not updated.
+[2026-05-03 20:58:39] [INFO] [orchestrator] Starting pipeline.
+[2026-05-03 20:58:39] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-03 20:58:40] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-03 20:58:40] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-03 20:58:40] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-03 20:58:40] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-03 20:58:40] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Managem' (4 rows).
+[2026-05-03 20:58:40] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-03 20:58:40] [INFO] [orchestrator] Generated 1 chart(s) for 'Asset and Configuration Managem'.
+[2026-05-03 20:58:40] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-03 20:58:40] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 2
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260503.pptx
+Duration         : 0.9 seconds
+[2026-05-03 21:00:26] [INFO] [orchestrator] Starting pipeline.
+[2026-05-03 21:00:26] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-03 21:00:26] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-03 21:00:26] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-03 21:00:26] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-03 21:00:26] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-03 21:00:26] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-03 21:00:26] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-03 21:00:26] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 1
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260503.pptx
+Duration         : 0.5 seconds
+[2026-05-05 01:13:20] [INFO] [orchestrator] Starting pipeline.
+[2026-05-05 01:13:20] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-05 01:13:20] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-05 01:13:20] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-05 01:13:20] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Managem' (4 rows).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generated 1 chart(s) for 'Asset and Configuration Managem'.
+[2026-05-05 01:13:20] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-05 01:13:21] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-05 01:13:22] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-05 01:13:22] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-05 01:13:22] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260505.pptx
+Duration         : 2.2 seconds
+[2026-05-06 00:03:35] [INFO] [orchestrator] Starting pipeline.
+[2026-05-06 00:03:35] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-06 00:03:36] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-06 00:03:36] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-06 00:03:36] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-06 00:03:36] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-06 00:03:40] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-06 00:03:40] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-06 00:03:43] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-06 00:03:43] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-06 00:03:44] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-06 00:03:44] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-06 00:03:44] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-06 00:03:45] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-06 00:03:47] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260506.pptx
+Duration         : 11.3 seconds
+[2026-05-06 01:39:08] [INFO] [orchestrator] Starting pipeline.
+[2026-05-06 01:39:08] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-06 01:39:08] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-06 01:39:09] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-06 01:39:09] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-06 01:39:09] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-06 01:39:13] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-06 01:39:13] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-06 01:39:15] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-06 01:39:15] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-06 01:39:15] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-06 01:39:16] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-06 01:39:17] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-06 01:39:17] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-06 01:39:20] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260506.pptx
+Duration         : 11.7 seconds
+[2026-05-07 01:37:32] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 01:37:32] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 01:37:33] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 01:37:33] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 01:37:33] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 01:37:33] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 01:37:34] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 01:37:34] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 01:37:34] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 01:37:34] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 01:37:35] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 01:37:35] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 01:37:35] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 01:37:35] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 01:37:35] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 3.1 seconds
+[2026-05-07 01:52:37] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 01:52:37] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 01:52:37] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 01:52:37] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 01:52:37] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 01:52:37] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 01:52:39] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 01:52:39] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 01:52:40] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 01:52:40] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 01:52:40] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 01:52:41] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 01:52:41] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 01:52:41] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 01:52:42] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 4.7 seconds
+[2026-05-07 02:05:49] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:05:49] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:05:49] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:05:50] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:05:50] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:05:50] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:05:51] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:05:52] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.2 seconds
+[2026-05-07 02:10:43] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:10:43] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:10:43] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:10:43] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:10:43] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:10:43] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:10:44] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:10:44] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:10:45] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:10:45] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:15:16] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:15:16] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:15:17] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:15:17] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:15:17] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:15:17] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:15:18] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:15:19] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:22:14] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:22:14] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:22:14] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:22:14] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:22:14] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:22:14] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:22:15] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:22:15] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:22:16] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:22:16] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:26:23] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:26:23] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:26:24] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:26:24] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:26:24] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:26:24] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:26:25] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:26:25] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:30:45] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:30:45] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:30:45] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:30:45] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:30:45] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:30:45] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:30:46] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:30:46] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:30:47] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:30:47] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:34:24] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:34:24] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:34:24] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:34:24] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:34:24] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:34:24] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:34:25] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:34:25] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:34:26] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:34:26] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.1 seconds
+[2026-05-07 02:38:40] [INFO] [orchestrator] Starting pipeline.
+[2026-05-07 02:38:40] [INFO] [orchestrator] Ingesting Excel file: C:\Projects\itsm_agent\sample_data\sample_itsm.xlsx
+[2026-05-07 02:38:41] [INFO] [orchestrator] Parsed KPI reference for 7 groups from 'Cover Page'.
+[2026-05-07 02:38:41] [INFO] [orchestrator] Loaded report config for 11 teams.
+[2026-05-07 02:38:41] [INFO] [orchestrator] Skipping sheet 'Cover Page' (in skip list).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Skipping sheet 'Report_Config' (in skip list).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'MIM' (4 rows).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'Change' (4 rows).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'Problem' (4 rows).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'Asset and Configuration Management' (4 rows).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'NOC' (4 rows).
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generated 2 chart(s) for 'NOC'.
+[2026-05-07 02:38:41] [INFO] [orchestrator] Generating analysis for sheet 'ServiceNow' (4 rows).
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generated 3 chart(s) for 'Change'.
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generating analysis for sheet 'Service Desk' (4 rows).
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generated 3 chart(s) for 'Problem'.
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generated 3 chart(s) for 'MIM'.
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generated 2 chart(s) for 'ServiceNow'.
+[2026-05-07 02:38:42] [INFO] [orchestrator] Generated 2 chart(s) for 'Service Desk'.
+[2026-05-07 02:38:43] [INFO] [orchestrator] Pipeline complete
+Sheets processed : 7
+Sheets skipped   : 2
+Output saved to  : ./output\ITSM_Report_20260507.pptx
+Duration         : 2.2 seconds

@@ -180,8 +180,8 @@ class PPTXBuilder:
     # 60 / 40 split: left text column is ~60 %, right chart column is ~40 %
     _HDR_H        = 0.62   # header bar height
     _PERF_Y       = 0.62   # performance table top
-    _PERF_H       = 0.45   # performance table height
-    _CONTENT_Y    = 1.07   # content area starts below perf table
+    _PERF_H       = 0.80   # performance table height
+    _CONTENT_Y    = 1.42   # content area starts below perf table
     _KPI_DEF_Y    = 6.50   # KPI definition table top
     _KPI_DEF_H    = 1.00   # KPI definition table height
     _SLIDE_BOTTOM = 6.50   # usable bottom edge
@@ -210,7 +210,7 @@ class PPTXBuilder:
             2, n_cols, Inches(0), Inches(self._PERF_Y),
             self.prs.slide_width, Inches(self._PERF_H))
         tbl = tbl_shape.table
-        HDR_ROW_H = 0.20
+        HDR_ROW_H = 0.35
         tbl.rows[0].height = int(Inches(HDR_ROW_H))
         tbl.rows[1].height = int(Inches(self._PERF_H - HDR_ROW_H))
         col_w = Inches(13.33 / n_cols)
@@ -221,18 +221,28 @@ class PPTXBuilder:
         AMBER_COL  = RGBColor(0xFF, 0xC1, 0x07)
         NEUTRAL_BG = self.MUFG_LGRAY
 
+        CELL_MARGIN = int(Inches(0.05))   # minimal padding so larger text doesn't wrap
+
         for ci, col_str in enumerate(cols_to_show):
             display_name = col_str.split("(")[0].strip() if "(" in col_str else col_str
+
+            # ── Header cell ───────────────────────────────────────────────────
             hdr = tbl.cell(0, ci)
             hdr.text = display_name
             hdr.fill.solid()
             hdr.fill.fore_color.rgb = self.MUFG_RED
+            hdr.margin_top    = CELL_MARGIN
+            hdr.margin_bottom = CELL_MARGIN
+            hdr.margin_left   = CELL_MARGIN
+            hdr.margin_right  = CELL_MARGIN
             for p in hdr.text_frame.paragraphs:
-                p.font.bold = True; p.font.size = Pt(5.5)
+                p.font.bold = True
+                p.font.size = Pt(9)   # keep small so wrapped headers don't expand the row
                 p.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
                 p.alignment = PP_ALIGN.CENTER
             hdr.text_frame.word_wrap = True
 
+            # ── Data cell ─────────────────────────────────────────────────────
             raw_val = last.get(col_str) if hasattr(last, "get") else last[col_str]
             val_cell = tbl.cell(1, ci)
             val_str = ""
@@ -248,6 +258,10 @@ class PPTXBuilder:
                 except Exception:
                     val_str = str(raw_val)
             val_cell.text = val_str
+            val_cell.margin_top    = CELL_MARGIN
+            val_cell.margin_bottom = CELL_MARGIN
+            val_cell.margin_left   = CELL_MARGIN
+            val_cell.margin_right  = CELL_MARGIN
 
             status = status_map.get(col_str.split("(")[0].strip(), "")
             if status == "PASS":
@@ -261,8 +275,10 @@ class PPTXBuilder:
             val_cell.fill.solid()
             val_cell.fill.fore_color.rgb = bg
             for p in val_cell.text_frame.paragraphs:
-                p.font.size = Pt(7); p.font.bold = True
-                p.font.color.rgb = fg; p.alignment = PP_ALIGN.CENTER
+                p.font.size = Pt(13)
+                p.font.bold = True
+                p.font.color.rgb = fg
+                p.alignment = PP_ALIGN.CENTER
 
     def _add_kpi_definition_table(self, slide, kpi_definitions: List[Dict]) -> None:
         defs = [d for d in kpi_definitions
@@ -282,7 +298,7 @@ class PPTXBuilder:
             cell.text = lbl
             cell.fill.solid(); cell.fill.fore_color.rgb = self.DARK_BLUE
             for p in cell.text_frame.paragraphs:
-                p.font.bold = True; p.font.size = Pt(6)
+                p.font.bold = True; p.font.size = Pt(9)
                 p.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         ALT_BG = RGBColor(0xE9, 0xF0, 0xF8)
         for ri, defn in enumerate(defs, start=1):
@@ -297,7 +313,7 @@ class PPTXBuilder:
                 cell.fill.solid(); cell.fill.fore_color.rgb = bg
                 cell.text_frame.word_wrap = True
                 for p in cell.text_frame.paragraphs:
-                    p.font.size = Pt(5.5)
+                    p.font.size = Pt(8)
                     p.font.color.rgb = (RGBColor(0x1F, 0x38, 0x64)
                                         if ci == 0 else RGBColor(0x33, 0x33, 0x33))
                     if ci == 0:
@@ -411,137 +427,118 @@ class PPTXBuilder:
         concern_items = (ps.get("concerns") or
                          ([ai_output.get("summary")] if ai_output.get("summary") else []))
 
-        # ── LEFT COLUMN GEOMETRY ──────────────────────────────────────────────
-        left_x   = Inches(0)
-        left_w   = Inches(self._LEFT_W)
-        MARGIN   = Inches(0.14)
-        GAP      = 0.10      # vertical gap between sections (inches)
-        GRN_HDR  = 0.34      # green header strip height
-        RED_HDR  = 0.30      # red concerns header height
-        CARD_H   = 0.63
-        CARD_GAP = 0.07
-        CARD_PAD = Inches(0.08)
-        ACC_W    = Inches(0.065)
+        # ── Fallback for empty concerns ───────────────────────────────────────
+        if not concern_items or all(not str(c).strip() for c in concern_items):
+            concern_items = [
+                "No critical concerns or blockers identified for this reporting period."
+            ]
 
-        AVAIL_H = self._SLIDE_BOTTOM - self._CONTENT_Y   # ≈ 5.43"
-        n_ach   = min(3, max(1, len(ach_items)))
-        n_foc   = min(3, max(1, len(focus_items)))
+        # ── LEFT COLUMN: Deterministic Grid Math ─────────────────────────────
+        #
+        # Hard boundaries derived purely from class constants — no shape
+        # property is ever read back after creation.
+        #
+        # top_anchor    = perf_table.bottom + margin
+        # bottom_anchor = kpi_def_table.top  - margin
+        # section_block = total / 3   (equal thirds, no flex)
+        #
+        # Each block:   blue header at block_top
+        #               white body  at block_top + HEADER_H
+        #
+        # Z-order: all white bodies drawn first (PASS 1), then all blue
+        # headers drawn last (PASS 2) — so headers are always on top.
 
-        ACH_H = GRN_HDR + CARD_GAP + n_ach * (CARD_H + CARD_GAP)
-        FOC_H = GRN_HDR + CARD_GAP + n_foc * (CARD_H + CARD_GAP)
-        ACH_H = max(1.3, min(2.5, ACH_H))
-        FOC_H = max(1.3, min(2.5, FOC_H))
-        CON_H = AVAIL_H - ACH_H - FOC_H - 2 * GAP
-        CON_H = max(0.7, CON_H)
+        left_x = Inches(0)
+        left_w = Inches(self._LEFT_W)
 
-        # ── COLOUR PALETTES ───────────────────────────────────────────────────
-        # KEY ACHIEVEMENTS — deep green
-        ACH_HDR_BG = RGBColor(0x1A, 0x73, 0x48)
-        ACH_BG     = RGBColor(0xED, 0xFB, 0xF3)
-        ACH_ACC    = RGBColor(0x1A, 0x73, 0x48)
-        ACH_TXT    = RGBColor(0x1A, 0x3A, 0x28)
-        ACH_NUM    = RGBColor(0x0A, 0x50, 0x30)
-        ACH_BDR    = RGBColor(0xC8, 0xE6, 0xD8)
+        # ── Hard boundary constants (all in inches, pure arithmetic) ──────────
+        # top_anchor is based on _CONTENT_Y + buffer, not _PERF_Y + _PERF_H.
+        # The perf table's column headers wrap to 2–3 lines, making the table
+        # render taller than the nominal _PERF_H = 0.80". _CONTENT_Y = 1.42"
+        # is the spec bottom-edge; adding 0.25" clears any visual overflow.
+        BOT_MARGIN    = 0.10
+        HEADER_H      = 0.30   # blue strip — fixed, never measured from a shape
+        BASE_PT       = 11.0
 
-        # NEXT WEEK FOCUS — dark navy / blue
-        FOC_HDR_BG = RGBColor(0x1F, 0x38, 0x64)
-        FOC_BG     = RGBColor(0xE4, 0xED, 0xF9)
-        FOC_ACC    = RGBColor(0x1F, 0x38, 0x64)
-        FOC_TXT    = RGBColor(0x1F, 0x38, 0x64)
-        FOC_NUM    = RGBColor(0x0D, 0x47, 0xA1)
-        FOC_BDR    = RGBColor(0xB0, 0xC8, 0xEE)
+        # _CONTENT_Y = 1.42" is the nominal table bottom, but the header row wraps
+        # to 2–3 lines even at Pt(9), pushing the visual bottom to ~1.7–1.8".
+        # 0.50" buffer brings top_anchor to 1.92" — safely below any overflow.
+        top_anchor    = self._CONTENT_Y + 0.50   # 1.92"
+        bottom_anchor = self._KPI_DEF_Y - BOT_MARGIN               # 6.40"
+        total_avail   = bottom_anchor - top_anchor                  # 4.48"
+        block_h       = total_avail / 3                             # 1.493" each
+        white_h       = block_h - HEADER_H                         # body height
 
-        CON_BG     = RGBColor(0xEF, 0xF4, 0xFA)   # very light blue-grey
+        SEC_HDR_BG = RGBColor(0x1F, 0x38, 0x64)
+        SEC_BG     = RGBColor(0xE4, 0xED, 0xF9)
+        SEC_TXT    = RGBColor(0x1F, 0x38, 0x64)
+        SEC_NUM    = RGBColor(0x0D, 0x47, 0xA1)
+        BORDER_CLR = RGBColor(0x1F, 0x38, 0x64)
 
-        def _draw_card_section(
-            ystart: float, sec_h: float, items: list, label: str,
-            hdr_bg: RGBColor, sec_bg: RGBColor, acc_c: RGBColor,
-            bdr_c: RGBColor, txt_c: RGBColor, num_c: RGBColor,
-        ):
-            """Draw a full-width card section with configurable colours."""
-            _s = slide.shapes.add_shape(
-                MSO_SHAPE.RECTANGLE, left_x, Inches(ystart), left_w, Inches(sec_h))
-            _s.fill.solid(); _s.fill.fore_color.rgb = sec_bg
-            _s.line.color.rgb = NAVY; _s.line.width = Pt(1)
-            _h = slide.shapes.add_shape(
-                MSO_SHAPE.RECTANGLE, left_x, Inches(ystart), left_w, Inches(GRN_HDR))
-            _h.fill.solid(); _h.fill.fore_color.rgb = hdr_bg; _h.line.fill.background()
-            _ht = slide.shapes.add_textbox(
-                left_x + Inches(0.14), Inches(ystart) + Inches(0.06),
-                left_w - Inches(0.18), Inches(GRN_HDR - 0.05))
-            _hp = _ht.text_frame.paragraphs[0]
-            _hp.text = label
-            _hp.font.bold = True; _hp.font.size = Pt(10.5)
-            _hp.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-            cy = ystart + GRN_HDR + CARD_GAP
-            for txt in items[:3]:
-                if cy + CARD_H > ystart + sec_h - 0.04:
-                    break
-                _c = slide.shapes.add_shape(
-                    MSO_SHAPE.RECTANGLE, left_x + CARD_PAD, Inches(cy),
-                    left_w - CARD_PAD * 2, Inches(CARD_H))
-                _c.fill.solid(); _c.fill.fore_color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-                _c.line.color.rgb = bdr_c; _c.line.width = Pt(0.75)
-                _a = slide.shapes.add_shape(
-                    MSO_SHAPE.RECTANGLE, left_x + CARD_PAD, Inches(cy), ACC_W, Inches(CARD_H))
-                _a.fill.solid(); _a.fill.fore_color.rgb = acc_c; _a.line.fill.background()
-                _tb = slide.shapes.add_textbox(
-                    left_x + CARD_PAD + ACC_W + Inches(0.07), Inches(cy) + Inches(0.07),
-                    left_w - CARD_PAD * 2 - ACC_W - Inches(0.10), Inches(CARD_H) - Inches(0.12))
-                _tb.text_frame.word_wrap = True
-                _tb.text_frame.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
+        # Section definitions: (slot_index, items, label, bullet_char)
+        section_defs = [
+            (0, ach_items,     "KEY ACHIEVEMENTS", "✓"),
+            (1, focus_items,   "NEXT WEEK FOCUS",  "✓"),
+            (2, concern_items, "CONCERNS",         "▸"),
+        ]
+
+        # ── PASS 1: white background rects + body textboxes (low z-order) ────
+        # All body shapes go into the XML before any header, so headers will
+        # always paint on top regardless of coordinate proximity.
+        for idx, items, label, bullet_char in section_defs:
+            block_top  = top_anchor + idx * block_h   # exact grid slot
+            body_top   = block_top + HEADER_H          # strictly below header
+
+            # Full-block background rectangle (light blue, bordered)
+            bg = slide.shapes.add_shape(
+                MSO_SHAPE.RECTANGLE,
+                left_x, Inches(block_top), left_w, Inches(block_h))
+            bg.fill.solid()
+            bg.fill.fore_color.rgb = SEC_BG
+            bg.line.color.rgb = BORDER_CLR
+            bg.line.width = Pt(1)
+
+            # White body textbox — top is block_top + HEADER_H (pure math)
+            body_tb = slide.shapes.add_textbox(
+                left_x + Inches(0.15),
+                Inches(body_top),
+                left_w - Inches(0.25),
+                Inches(max(white_h - 0.05, 0.20)))
+            body_tb.line.color.rgb = BORDER_CLR
+            body_tb.line.width = Pt(1)
+            btf = body_tb.text_frame
+            btf.word_wrap = True
+            btf.auto_size = MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE
+            first = True
+            for item in (items or [])[:4]:
+                p = btf.paragraphs[0] if first else btf.add_paragraph()
+                first = False
                 self._apply_rich_bullet_to_para(
-                    _tb.text_frame.paragraphs[0], txt, bullet_char="✓",
-                    base_pt=8.0, text_color=txt_c, num_color=num_c)
-                cy += CARD_H + CARD_GAP
+                    p, str(item), bullet_char=bullet_char,
+                    base_pt=BASE_PT, text_color=SEC_TXT, num_color=SEC_NUM)
 
-        y = self._CONTENT_Y
+        # ── PASS 2: blue header rects + labels (high z-order) ────────────────
+        # Added after all body shapes → always rendered on top in PowerPoint.
+        for idx, items, label, bullet_char in section_defs:
+            block_top = top_anchor + idx * block_h
 
-        # ══ SECTION 1: KEY ACHIEVEMENTS — green palette ═══════════════════════
-        _draw_card_section(y, ACH_H, ach_items, "KEY ACHIEVEMENTS",
-                           ACH_HDR_BG, ACH_BG, ACH_ACC, ACH_BDR, ACH_TXT, ACH_NUM)
-        y += ACH_H + GAP
+            hdr_rect = slide.shapes.add_shape(
+                MSO_SHAPE.RECTANGLE,
+                left_x, Inches(block_top), left_w, Inches(HEADER_H))
+            hdr_rect.fill.solid()
+            hdr_rect.fill.fore_color.rgb = SEC_HDR_BG
+            hdr_rect.line.fill.background()
 
-        # ══ SECTION 2: NEXT WEEK FOCUS — navy palette ═════════════════════════
-        _draw_card_section(y, FOC_H, focus_items, "NEXT WEEK FOCUS",
-                           FOC_HDR_BG, FOC_BG, FOC_ACC, FOC_BDR, FOC_TXT, FOC_NUM)
-        y += FOC_H + GAP
-
-        # ══ SECTION 3: CONCERNS ═══════════════════════════════════════════════
-        _bg3 = slide.shapes.add_shape(
-            MSO_SHAPE.RECTANGLE, left_x, Inches(y), left_w, Inches(CON_H))
-        _bg3.fill.solid(); _bg3.fill.fore_color.rgb = CON_BG
-        _bg3.line.color.rgb = NAVY; _bg3.line.width = Pt(1)
-
-        _hdr3 = slide.shapes.add_shape(
-            MSO_SHAPE.RECTANGLE, left_x, Inches(y), left_w, Inches(RED_HDR))
-        _hdr3.fill.solid(); _hdr3.fill.fore_color.rgb = self.MUFG_RED
-        _hdr3.line.fill.background()
-
-        _ht3 = slide.shapes.add_textbox(
-            left_x + Inches(0.14), Inches(y) + Inches(0.05),
-            left_w - Inches(0.18), Inches(RED_HDR - 0.04))
-        _hp3 = _ht3.text_frame.paragraphs[0]
-        _hp3.text = "CONCERNS"
-        _hp3.font.bold = True; _hp3.font.size = Pt(10.5)
-        _hp3.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-
-        _ctb = slide.shapes.add_textbox(
-            left_x + MARGIN, Inches(y + RED_HDR + 0.07),
-            left_w - MARGIN * 2, Inches(CON_H - RED_HDR - 0.10))
-        tf_c = _ctb.text_frame
-        tf_c.clear(); tf_c.word_wrap = True
-        tf_c.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
-
-        use_bullet = len(concern_items) > 1
-        first_c = True
-        for item in concern_items[:4]:
-            p_c = tf_c.paragraphs[0] if first_c else tf_c.add_paragraph()
-            first_c = False
-            self._apply_rich_bullet_to_para(
-                p_c, str(item),
-                bullet_char="▸" if use_bullet else "",
-                base_pt=8.5, text_color=self.MUFG_DARK, num_color=self.MUFG_RED)
+            hdr_tb = slide.shapes.add_textbox(
+                left_x + Inches(0.14),
+                Inches(block_top + 0.05),
+                left_w - Inches(0.20),
+                Inches(HEADER_H - 0.05))
+            hp = hdr_tb.text_frame.paragraphs[0]
+            hp.text = label
+            hp.font.bold  = True
+            hp.font.size  = Pt(11)
+            hp.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
         # ── RIGHT COLUMN: chart_bytes fallback (simple path only) ─────────────
         if chart_bytes:
@@ -866,7 +863,7 @@ class PPTXBuilder:
                     _p = etree.SubElement(txPr, f"{{{A}}}p")
                     _pPr = etree.SubElement(_p, f"{{{A}}}pPr")
                     defRPr = etree.SubElement(_pPr, f"{{{A}}}defRPr")
-                    defRPr.set("sz", "700")
+                    defRPr.set("sz", "550")
 
                     etree.SubElement(dLbls, f"{{{C}}}dLblPos").set("val", pos)
                     for tag, val in [
@@ -1014,26 +1011,135 @@ class PPTXBuilder:
             for si, series in enumerate(chart.series):
                 series.format.fill.solid()
                 series.format.fill.fore_color.rgb = MUFG[si % len(MUFG)]
-                # Show value labels on every data point — python-pptx native API only
                 try:
                     series.data_labels.show_value = True
+                    series.data_labels.font.size = Pt(6)
                 except Exception:
                     pass
 
-            # Hide Y-axis scale numbers — keep the chart area clean;
-            # value labels on each bar/point already show the exact numbers.
+            # Remove Y-axis labels and all gridlines — data labels are sufficient
             try:
                 chart.value_axis.visible = False
             except Exception:
                 pass
+            try:
+                chart.value_axis.has_major_gridlines = False
+                chart.value_axis.has_minor_gridlines = False
+            except Exception:
+                pass
+            try:
+                chart.category_axis.has_major_gridlines = False
+            except Exception:
+                pass
 
-            # Legend at bottom
+            # Legend at bottom with compact 9pt font so bars dominate
             if n_series > 1:
                 chart.has_legend = True
                 chart.legend.position = XL_LEGEND_POSITION.BOTTOM
                 chart.legend.include_in_layout = False
+                try:
+                    chart.legend.font.size = Pt(9)
+                except Exception:
+                    pass
             else:
                 chart.has_legend = False
+
+            # Maximize plot area so bars/lines fill the chart frame
+            try:
+                from pptx.util import Emu
+                pa = chart.plot_area
+                pa.left   = Emu(0)
+                pa.top    = Emu(0)
+                pa.width  = None   # let pptx auto-size to frame width
+                pa.height = None
+            except Exception:
+                pass
+
+            return True
+        except Exception:
+            return False
+
+    def _try_native_pie_chart(
+        self,
+        slide,
+        df: pd.DataFrame,
+        column_types: dict,
+        left_x: float,
+        top_y: float,
+        width_in: float,
+        height_in: float,
+        cols_override: Optional[List] = None,
+    ) -> bool:
+        """
+        Render a PIE chart from the LAST row of count (numeric) columns.
+        Uses XL_CHART_TYPE.PIE with percentage data labels.
+        Suitable when there are 2-5 count columns and a single time period matters.
+        Returns True on success; False → caller falls back.
+        """
+        if df is None or df.empty:
+            return False
+        try:
+            from pptx.chart.data import ChartData
+            from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+
+            skip_kw = {"comment", "achievement", "weekly", "month", "quarter",
+                       "sprint no", "week no", "date"}
+
+            if cols_override is not None:
+                pie_cols = [c for c in cols_override
+                            if column_types.get(str(c)) == "numeric"]
+            else:
+                pie_cols = [c for c in df.columns
+                            if column_types.get(str(c)) == "numeric"
+                            and not any(kw in str(c).lower() for kw in skip_kw)]
+
+            if not (2 <= len(pie_cols) <= 5):
+                return False
+
+            last_row = df.iloc[-1]
+            slices, labels = [], []
+            for col in pie_cols:
+                try:
+                    val = float(last_row[col])
+                    if val > 0:
+                        raw = str(col).split("(")[0].strip()
+                        labels.append(raw if len(raw) <= 20 else raw[:18] + "…")
+                        slices.append(round(val, 2))
+                except Exception:
+                    pass
+
+            if len(slices) < 2:
+                return False
+
+            chart_data = ChartData()
+            chart_data.categories = labels
+            chart_data.add_series("", slices)
+
+            chart_frame = slide.shapes.add_chart(
+                XL_CHART_TYPE.PIE,
+                Inches(left_x), Inches(top_y),
+                Inches(width_in), Inches(height_in),
+                chart_data,
+            )
+            chart = chart_frame.chart
+            chart.has_title = False
+            chart.has_legend = True
+            chart.legend.position = XL_LEGEND_POSITION.BOTTOM
+            chart.legend.include_in_layout = False
+            try:
+                chart.legend.font.size = Pt(9)
+            except Exception:
+                pass
+
+            # Show percentage data labels
+            plot = chart.plots[0]
+            dls = plot.data_labels
+            dls.show_percentage = True
+            dls.show_value = False
+            try:
+                dls.font.size = Pt(8)
+            except Exception:
+                pass
 
             return True
         except Exception:
@@ -1137,10 +1243,13 @@ class PPTXBuilder:
                 charts, summary_mode, df, kpi_definitions or [],
                 column_types or {}, rag_thresholds, parsed_sections)
         else:
+            # Draw perf table FIRST so section headers have higher z-order.
+            # This ensures the blue headers are never hidden by the table even
+            # if the table's rendered height overflows its nominal _PERF_H bound.
+            self._add_performance_table(slide, df, kpi_rows)
             self._render_group_slide(slide, sheet_name, ai_output, kpi_rows,
                                      chart_bytes, kpi_definitions or [],
                                      rag_thresholds, parsed_sections)
-            self._add_performance_table(slide, df, kpi_rows)
             if summary_mode == "use_excel":
                 self._add_team_provided_label(slide, Inches(0.2), Inches(2.4))
 
@@ -1265,7 +1374,16 @@ class PPTXBuilder:
             chart_h = avail_h / 2
             top_y   = self._CONTENT_Y + avail_h / 4   # centre in available zone
             native_ok = False
-            if df is not None:
+            if df is not None and count_cols:
+                # Hard trigger: single-row DataFrames → pie chart for volume breakdown
+                single_period = len(df.dropna(how="all")) == 1
+                if single_period and 2 <= len(count_cols) <= 5:
+                    native_ok = self._try_native_pie_chart(
+                        slide, df, ct,
+                        self._RIGHT_X, top_y, self._CHART_W, chart_h,
+                        cols_override=count_cols,
+                    )
+            if not native_ok and df is not None:
                 native_ok = self._try_native_chart(
                     slide, df, "auto", ct,
                     self._RIGHT_X, top_y, self._CHART_W, chart_h,
