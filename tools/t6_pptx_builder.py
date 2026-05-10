@@ -176,6 +176,15 @@ class PPTXBuilder:
             lines += max(1, math.ceil(len(str(item)) / chars_per_line))
         return label_h + lines * line_h + pad
 
+    # ── Display-name mapping: Excel sheet name → PPTX slide header ─────────────
+    # Add entries here to decouple the internal sheet name from the visual title.
+    _DISPLAY_NAME_MAP: Dict[str, str] = {
+        "change management": "Asset and Configuration Management",
+        # "Asset and Configuration" maps to itself — no rename needed,
+        # but listed here explicitly so intent is clear.
+        "asset and configuration": "Asset and Configuration",
+    }
+
     # ── Layout constants ──────────────────────────────────────────────────────
     # 60 / 40 split: left text column is ~60 %, right chart column is ~40 %
     _HDR_H        = 0.62   # header bar height
@@ -193,9 +202,10 @@ class PPTXBuilder:
     # ── Performance & KPI tables (full-width, unchanged) ─────────────────────
 
     def _add_performance_table(self, slide, df: Optional[pd.DataFrame],
-                                kpi_rows: List[Dict]) -> None:
+                                kpi_rows: List[Dict]):
+        """Returns the table shape so callers can anchor downstream elements to its bottom."""
         if df is None or df.empty:
-            return
+            return None
         SKIP_KW = {"comment", "achievement", "weekly", "month", "quarter", "date"}
         status_map: Dict[str, str] = {
             str(r.get("kpi_name", "")): str(r.get("status", "")) for r in kpi_rows}
@@ -203,7 +213,7 @@ class PPTXBuilder:
         cols_to_show = [str(c) for c in df.columns
                         if not any(kw in str(c).lower() for kw in SKIP_KW)]
         if not cols_to_show:
-            return
+            return None
         cols_to_show = cols_to_show[:16]
         n_cols = len(cols_to_show)
         tbl_shape = slide.shapes.add_table(
@@ -279,6 +289,8 @@ class PPTXBuilder:
                 p.font.bold = True
                 p.font.color.rgb = fg
                 p.alignment = PP_ALIGN.CENTER
+
+        return tbl_shape
 
     def _add_kpi_definition_table(self, slide, kpi_definitions: List[Dict]) -> None:
         defs = [d for d in kpi_definitions
@@ -374,6 +386,7 @@ class PPTXBuilder:
         kpi_definitions: Optional[List[Dict]] = None,
         rag_thresholds: Optional[Dict] = None,
         parsed_sections: Optional[Dict] = None,
+        full_width: bool = False,
     ):
         """
         Left column (~60 %):
@@ -382,8 +395,12 @@ class PPTXBuilder:
           3. CONCERNS          — red header + light body           (Excel Concerns)
         Right column (~40 %): native python-pptx chart; data-table fallback.
         Content source: parsed_sections (Excel) with AI output fallback.
+        full_width=True: text column spans the full slide (no chart zone reserved).
         """
         NAVY = RGBColor(0x1F, 0x38, 0x64)
+
+        # Apply display name mapping so visual headers can differ from sheet names.
+        display_name = self._DISPLAY_NAME_MAP.get(sheet_name.lower().strip(), sheet_name)
 
         # ── HEADER BAR ────────────────────────────────────────────────────────
         top_bar = slide.shapes.add_shape(
@@ -396,7 +413,7 @@ class PPTXBuilder:
         tb = slide.shapes.add_textbox(
             Inches(0.2), Inches(0.08), Inches(8.2), Inches(self._HDR_H - 0.08))
         p = tb.text_frame.paragraphs[0]
-        p.text = f"{sheet_name}  |  {self._fmt_date(self.report_date)}"
+        p.text = f"{display_name}  |  {self._fmt_date(self.report_date)}"
         p.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         p.font.size = Pt(14); p.font.bold = True
 
@@ -449,7 +466,10 @@ class PPTXBuilder:
         # headers drawn last (PASS 2) — so headers are always on top.
 
         left_x = Inches(0)
-        left_w = Inches(self._LEFT_W)
+        # When there is no chart zone, expand the text column to fill the slide.
+        # Y-coordinates are NEVER changed — only the width varies.
+        slide_w_in = self.prs.slide_width.inches
+        left_w = Inches(slide_w_in - 0.20) if full_width else Inches(self._LEFT_W)
 
         # ── Hard boundary constants (all in inches, pure arithmetic) ──────────
         # top_anchor is based on _CONTENT_Y + buffer, not _PERF_Y + _PERF_H.
@@ -1013,7 +1033,20 @@ class PPTXBuilder:
                 series.format.fill.fore_color.rgb = MUFG[si % len(MUFG)]
                 try:
                     series.data_labels.show_value = True
-                    series.data_labels.font.size = Pt(6)
+                    if use_line:
+                        # Line charts: alternate ABOVE/BELOW so labels never overlap
+                        series.data_labels.font.size = Pt(8)
+                        try:
+                            from pptx.enum.chart import XL_DATA_LABEL_POSITION
+                            series.data_labels.position = (
+                                XL_DATA_LABEL_POSITION.ABOVE
+                                if si % 2 == 0
+                                else XL_DATA_LABEL_POSITION.BELOW
+                            )
+                        except Exception:
+                            pass
+                    else:
+                        series.data_labels.font.size = Pt(7)
                 except Exception:
                     pass
 
@@ -1055,6 +1088,22 @@ class PPTXBuilder:
             except Exception:
                 pass
 
+            # Bounding-box border: transparent rectangle drawn on top of the chart
+            # with the identical coordinates — python-pptx line borders on charts
+            # are unreliable; this AutoShape approach always works.
+            try:
+                bf = slide.shapes.add_shape(
+                    MSO_SHAPE.RECTANGLE,
+                    Inches(left_x), Inches(top_y),
+                    Inches(width_in), Inches(height_in),
+                )
+                bf.fill.background()
+                bf.line.fill.solid()
+                bf.line.color.rgb = RGBColor(0xA6, 0xA6, 0xA6)
+                bf.line.width = Pt(1)
+            except Exception:
+                pass
+
             return True
         except Exception:
             return False
@@ -1079,41 +1128,54 @@ class PPTXBuilder:
         if df is None or df.empty:
             return False
         try:
-            from pptx.chart.data import ChartData
+            from pptx.chart.data import CategoryChartData
             from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
 
             skip_kw = {"comment", "achievement", "weekly", "month", "quarter",
                        "sprint no", "week no", "date"}
+            num_types = {"numeric", "percent", "percent_decimal"}
 
             if cols_override is not None:
                 pie_cols = [c for c in cols_override
-                            if column_types.get(str(c)) == "numeric"]
+                            if column_types.get(str(c)) in num_types]
             else:
                 pie_cols = [c for c in df.columns
-                            if column_types.get(str(c)) == "numeric"
+                            if column_types.get(str(c)) in num_types
                             and not any(kw in str(c).lower() for kw in skip_kw)]
 
-            if not (2 <= len(pie_cols) <= 5):
+            if len(pie_cols) < 2:
                 return False
 
             last_row = df.iloc[-1]
+            # Cap at top 5 slices by absolute value when more columns are available
+            if len(pie_cols) > 5:
+                def _safe_val(c):
+                    try:
+                        return abs(float(last_row[c]))
+                    except Exception:
+                        return 0.0
+                pie_cols = sorted(pie_cols, key=_safe_val, reverse=True)[:5]
+
             slices, labels = [], []
             for col in pie_cols:
                 try:
-                    val = float(last_row[col])
-                    if val > 0:
+                    raw_val = float(last_row[col])
+                    # Normalise percent_decimal (0.97 → 97) so slices are comparable
+                    if column_types.get(str(col)) == "percent_decimal":
+                        raw_val = raw_val * 100
+                    if raw_val > 0:
                         raw = str(col).split("(")[0].strip()
                         labels.append(raw if len(raw) <= 20 else raw[:18] + "…")
-                        slices.append(round(val, 2))
+                        slices.append(round(raw_val, 2))
                 except Exception:
                     pass
 
             if len(slices) < 2:
                 return False
 
-            chart_data = ChartData()
+            chart_data = CategoryChartData()
             chart_data.categories = labels
-            chart_data.add_series("", slices)
+            chart_data.add_series("Values", tuple(slices))
 
             chart_frame = slide.shapes.add_chart(
                 XL_CHART_TYPE.PIE,
@@ -1131,13 +1193,38 @@ class PPTXBuilder:
             except Exception:
                 pass
 
-            # Show percentage data labels
-            plot = chart.plots[0]
-            dls = plot.data_labels
-            dls.show_percentage = True
-            dls.show_value = False
+            # Series-level data labels — more reliable than plot-level for pie
             try:
-                dls.font.size = Pt(8)
+                series = chart.plots[0].series[0]
+                series.has_data_labels = True
+                series.data_labels.show_percentage = True
+                series.data_labels.show_category_name = True
+                series.data_labels.show_value = False
+                try:
+                    series.data_labels.font.size = Pt(10)
+                except Exception:
+                    pass
+            except Exception:
+                # Fallback: plot-level labels
+                try:
+                    dls = chart.plots[0].data_labels
+                    dls.show_percentage = True
+                    dls.show_value = False
+                    dls.font.size = Pt(9)
+                except Exception:
+                    pass
+
+            # Bounding-box border — same coords as chart, transparent fill
+            try:
+                bf = slide.shapes.add_shape(
+                    MSO_SHAPE.RECTANGLE,
+                    Inches(left_x), Inches(top_y),
+                    Inches(width_in), Inches(height_in),
+                )
+                bf.fill.background()
+                bf.line.fill.solid()
+                bf.line.color.rgb = RGBColor(0xA6, 0xA6, 0xA6)
+                bf.line.width = Pt(1)
             except Exception:
                 pass
 
@@ -1221,6 +1308,9 @@ class PPTXBuilder:
         rag_thresholds: Optional[Dict] = None,
         parsed_sections: Optional[Dict] = None,
     ):
+        if df is None or (isinstance(df, pd.DataFrame) and df.empty):
+            return
+
         existing = self._find_group_slide(sheet_name)
         if existing is None:
             slide = self.prs.slides.add_slide(
@@ -1235,9 +1325,7 @@ class PPTXBuilder:
                 slide, sheet_name, ai_output, kpi_rows,
                 kpi_definitions or [], multigroup_data or {},
                 rag_thresholds, df)
-            return
-
-        if charts:
+        elif charts:
             self._render_group_slide_multi(
                 slide, sheet_name, ai_output, kpi_rows,
                 charts, summary_mode, df, kpi_definitions or [],
@@ -1247,11 +1335,15 @@ class PPTXBuilder:
             # This ensures the blue headers are never hidden by the table even
             # if the table's rendered height overflows its nominal _PERF_H bound.
             self._add_performance_table(slide, df, kpi_rows)
+            # full_width=True when there is no chart zone — text spans the slide.
+            no_charts = not chart_bytes
             self._render_group_slide(slide, sheet_name, ai_output, kpi_rows,
                                      chart_bytes, kpi_definitions or [],
-                                     rag_thresholds, parsed_sections)
+                                     rag_thresholds, parsed_sections,
+                                     full_width=no_charts)
             if summary_mode == "use_excel":
                 self._add_team_provided_label(slide, Inches(0.2), Inches(2.4))
+
 
     def _add_team_provided_label(self, slide, left, top):
         tb = slide.shapes.add_textbox(left, top, Inches(3), Inches(0.25))
@@ -1320,77 +1412,72 @@ class PPTXBuilder:
         self._render_group_slide(slide, sheet_name, ai_output, kpi_rows,
                                  chart_bytes=None, kpi_definitions=kpi_definitions,
                                  rag_thresholds=rag_thresholds,
-                                 parsed_sections=parsed_sections)
-        self._add_performance_table(slide, df, kpi_rows)
+                                 parsed_sections=parsed_sections,
+                                 full_width=False)
+        perf_tbl = self._add_performance_table(slide, df, kpi_rows)
 
         if summary_mode == "use_excel":
             self._add_team_provided_label(
                 slide, Inches(0.2), Inches(self._CONTENT_Y + 0.9))
 
-        # Split numeric columns into volume (count) and rate (percent) groups.
-        # If both groups are non-empty → 2 distinct charts (column + line).
-        # Otherwise → 1 chart at half height, vertically centred.
-        skip_kw = {"comment", "achievement", "weekly", "month", "quarter",
-                   "sprint no", "week no", "date"}
-        ct = column_types or {}
-
-        count_cols = [c for c in (df.columns if df is not None else [])
-                      if ct.get(str(c)) == "numeric"
-                      and not any(kw in str(c).lower() for kw in skip_kw)]
-        rate_cols  = [c for c in (df.columns if df is not None else [])
-                      if ct.get(str(c)) in {"percent", "percent_decimal"}
-                      and not any(kw in str(c).lower() for kw in skip_kw)]
-
-        avail_h = self._CHART_FOOTER - self._CONTENT_Y - 0.05
-        GAP     = 0.08   # tighter gap → more height for each chart
-
-        if count_cols and rate_cols and df is not None:
-            # ── Two distinct charts ────────────────────────────────────────
-            chart_h = (avail_h - GAP) / 2
-            y1 = self._CONTENT_Y
-            y2 = y1 + chart_h + GAP
-
-            # Chart 1 (top): volume / count series as clustered columns
-            ok1 = self._try_native_chart(
-                slide, df, "auto", ct,
-                self._RIGHT_X, y1, self._CHART_W, chart_h,
-                cols_override=count_cols,
-            )
-            if not ok1:
-                self._add_data_table(slide, df,
-                    (self._RIGHT_X, y1, self._CHART_W, chart_h))
-
-            # Chart 2 (bottom): rate / percentage series as lines
-            ok2 = self._try_native_chart(
-                slide, df, "line", ct,
-                self._RIGHT_X, y2, self._CHART_W, chart_h,
-                cols_override=rate_cols,
-            )
-            if not ok2:
-                self._add_data_table(slide, df,
-                    (self._RIGHT_X, y2, self._CHART_W, chart_h))
+        # ── Dynamic chart zone: anchored to the actual perf table bottom ────────
+        # Using shape.top + shape.height converts shape coordinates (EMU) back to
+        # inches so charts never overlap the perf table regardless of row height.
+        _EMU = 914400.0  # EMU per inch
+        if perf_tbl is not None:
+            chart_start_y = (perf_tbl.top + perf_tbl.height) / _EMU + 0.30
         else:
-            # ── Single chart: half height, vertically centred ──────────────
-            chart_h = avail_h / 2
-            top_y   = self._CONTENT_Y + avail_h / 4   # centre in available zone
-            native_ok = False
-            if df is not None and count_cols:
-                # Hard trigger: single-row DataFrames → pie chart for volume breakdown
-                single_period = len(df.dropna(how="all")) == 1
-                if single_period and 2 <= len(count_cols) <= 5:
-                    native_ok = self._try_native_pie_chart(
-                        slide, df, ct,
-                        self._RIGHT_X, top_y, self._CHART_W, chart_h,
-                        cols_override=count_cols,
-                    )
-            if not native_ok and df is not None:
-                native_ok = self._try_native_chart(
-                    slide, df, "auto", ct,
-                    self._RIGHT_X, top_y, self._CHART_W, chart_h,
-                )
-            if not native_ok and df is not None:
-                self._add_data_table(slide, df,
-                    (self._RIGHT_X, top_y, self._CHART_W, chart_h))
+            chart_start_y = self._PERF_Y + self._PERF_H + 0.30  # fallback constant
+
+        # Bottom anchor = top of the KPI definition table minus margin
+        chart_max_bottom  = self._KPI_DEF_Y - 0.15
+        available_h       = chart_max_bottom - chart_start_y
+
+        GAP = 0.10  # vertical gap between two stacked charts
+
+        # Config-driven chart placement — use the charts list (already capped at 2 by t5/t2).
+        ct = column_types or {}
+        valid_charts = [c for c in (charts or []) if c is not None][:2]
+
+        PADDING_IN = 0.10  # inward padding so chart never touches table boundaries
+
+        def _place_one_chart(entry: dict, top_y: float, height: float) -> None:
+            """Route to the correct native chart type.
+            Pie: MUST render as a pie chart — no table fallback.
+            Other types: fall back to data table if native chart fails.
+            Padding is applied here so both the chart and its bounding box
+            sit cleanly inside the allocated slot without touching neighbours.
+            """
+            px = self._RIGHT_X + PADDING_IN
+            py = top_y + PADDING_IN
+            pw = self._CHART_W - 2 * PADDING_IN
+            ph = height - 2 * PADDING_IN
+            req = str(entry.get("chart_type", "auto")).strip().lower()
+            if req == "pie":
+                self._try_native_pie_chart(slide, df, ct, px, py, pw, ph)
+            elif req in ("line", "bar_dotted_line"):
+                ok = self._try_native_chart(slide, df, "line", ct, px, py, pw, ph)
+                if not ok:
+                    self._add_data_table(slide, df, (px, py, pw, ph))
+            else:
+                ok = self._try_native_chart(slide, df, "auto", ct, px, py, pw, ph)
+                if not ok:
+                    self._add_data_table(slide, df, (px, py, pw, ph))
+
+        if not valid_charts:
+            pass  # no charts — leave right zone blank
+
+        elif len(valid_charts) == 1:
+            # Single chart: full available height
+            _place_one_chart(valid_charts[0], chart_start_y, available_h)
+
+        else:
+            # Two charts: split available height equally, with a gap between them
+            chart_h = (available_h / 2) - (GAP / 2)
+            y1 = chart_start_y
+            y2 = chart_start_y + chart_h + GAP
+            for entry, top_y in zip(valid_charts, [y1, y2]):
+                _place_one_chart(entry, top_y, chart_h)
 
     def save(self, output_path: str) -> str:
         os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)

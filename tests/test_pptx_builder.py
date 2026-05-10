@@ -29,11 +29,13 @@ def test_add_group_slide_original_interface():
     builder = _make_builder()
     builder.start_or_load_report(os.path.join(tempfile.mkdtemp(), "out.pptx"))
     builder.add_title_slide("20260417", 1)
+    df = pd.DataFrame({"Week": ["W1", "W2"], "SLA": [0.95, 0.97]})
     builder.add_group_slide(
         sheet_name="MIM",
         ai_output=_ai_output(),
         kpi_rows=[],
         chart_bytes=None,
+        df=df,
     )
     assert len(builder.prs.slides) == 2
 
@@ -78,12 +80,14 @@ def test_summary_mode_use_excel_label():
     builder = _make_builder()
     builder.start_or_load_report(os.path.join(tempfile.mkdtemp(), "out.pptx"))
     builder.add_title_slide("20260417", 1)
+    df = pd.DataFrame({"Week": ["W1", "W2"], "SLA": [0.95, 0.97]})
     builder.add_group_slide(
         sheet_name="NOC",
         ai_output=_ai_output(),
         kpi_rows=[],
         chart_bytes=None,
         summary_mode="use_excel",
+        df=df,
     )
     slide = builder.prs.slides[-1]
     all_text = " ".join(

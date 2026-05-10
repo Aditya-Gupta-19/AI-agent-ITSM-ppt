@@ -130,9 +130,9 @@ def test_read_report_config_returns_dict():
     ws = wb.active
     ws.title = "Report_Config"
     ws.append(["Team Name","Chart 1 Type","Chart 1 Columns","Chart 2 Type",
-                "Chart 2 Columns","Chart 3 Type","Slide Layout","Summary Mode",
+                "Chart 2 Columns","Slide Layout","Summary Mode",
                 "Include Insights","Skip This Team","Priority"])
-    ws.append(["MIM","grouped_bar","auto","none","auto","","standard",
+    ws.append(["MIM","grouped_bar","auto","none","auto","standard",
                "ai_write","yes","no","normal"])
     with tempfile.TemporaryDirectory() as d:
         path = os.path.join(d, "test.xlsx")

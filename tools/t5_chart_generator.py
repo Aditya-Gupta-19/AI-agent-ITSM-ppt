@@ -9,6 +9,26 @@ from chart_renderers import auto_select, get_renderer
 
 
 class ChartGenerator:
+    @staticmethod
+    def _resolve_config(sheet_name: str, report_config: dict) -> dict:
+        """Exact-match first; fallback to longest prefix match (≥10 chars, case-insensitive)."""
+        if not sheet_name or not report_config:
+            return {}
+        exact = report_config.get(sheet_name)
+        if exact is not None:
+            return exact
+        sn_lower = sheet_name.lower().strip()
+        best_key, best_len = None, 0
+        for key in report_config:
+            kl = key.lower().strip()
+            min_len = min(len(sn_lower), len(kl))
+            if min_len < 10:
+                continue
+            if sn_lower.startswith(kl[:min_len]) or kl.startswith(sn_lower[:min_len]):
+                if min_len > best_len:
+                    best_key, best_len = key, min_len
+        return report_config.get(best_key, {}) if best_key else {}
+
     def generate(
         self,
         df: pd.DataFrame,
@@ -187,19 +207,22 @@ class ChartGenerator:
           [{"chart_id": str, "png_bytes": bytes|None, "position": str, "title": str}]
         Falls back to auto_select when no config entry for sheet.
         """
-        team_config = report_config.get(sheet_name, {})
+        if "asset and configuration" in sheet_name.lower():
+            return []
+
+        team_config = self._resolve_config(sheet_name, report_config)
         charts_spec = team_config.get("charts", [])
 
         if not charts_spec:
             auto_type = auto_select(df, column_types)
             charts_spec = [{"type": auto_type, "columns": "auto"}]
 
-        positions = ["right", "bottom_left", "bottom_right",
-                     "third_left", "third_mid", "third_right"]
+        charts_spec = charts_spec[:2]  # hard cap — max 2 charts per slide
+
+        positions = ["right", "bottom_right"]
         results = []
 
-        # For 3+ charts, use a shorter figsize so they all fit on the slide
-        figsize_hint = (9, 1.8) if len(charts_spec) >= 3 else (9, 2.8)
+        figsize_hint = (9, 3.4) if len(charts_spec) == 1 else (9, 2.8)
 
         for i, spec in enumerate(charts_spec):
             chart_type = spec.get("type", "auto")

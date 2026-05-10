@@ -343,9 +343,10 @@ class ExcelReader:
         """
         Reads the 'Report_Config' sheet from the Excel workbook.
         Returns {} if the sheet is not found.
-        Column order (1-indexed): Team Name | Chart1 Type | Chart1 Cols |
-          Chart2 Type | Chart2 Cols | Chart3 Type | Layout | Summary Mode |
-          Include Insights | Skip | Priority
+        Column order (0-indexed): Team Name | Chart1 Type | Chart1 Cols |
+          Chart2 Type | Chart2 Cols | Layout | Summary Mode |
+          Include Insights | Skip | Priority | Green% | Amber%
+        Max 2 charts per team (hard cap enforced here).
         """
         try:
             with open(file_path, "rb") as fh:
@@ -383,10 +384,7 @@ class ExcelReader:
                     ccols = _cell(col_idx)
                     if ctype:
                         charts.append({"type": ctype, "columns": ccols or "auto"})
-                # Chart 3 type only (no separate columns column)
-                ctype3 = _cell(5)
-                if ctype3:
-                    charts.append({"type": ctype3, "columns": "auto"})
+                charts = charts[:2]  # hard cap — max 2 charts per slide
 
                 def _float_val(idx: int, default: float = 0.0) -> float:
                     val = row[idx] if idx < len(row) else None
@@ -395,16 +393,16 @@ class ExcelReader:
                     except (TypeError, ValueError):
                         return default
 
-                include_raw = _cell(8)
+                include_raw = _cell(7)
                 result[team_name] = {
                     "charts": charts,
-                    "layout": _cell(6) or "standard",
-                    "summary_mode": _cell(7) or "ai_write",
+                    "layout": _cell(5) or "standard",
+                    "summary_mode": _cell(6) or "ai_write",
                     "include_insights": (include_raw != "no") if include_raw else True,
-                    "skip": _bool(9),
-                    "priority": _cell(10) or "normal",
-                    "green_threshold": _float_val(11, 95.0),
-                    "amber_threshold": _float_val(12, 90.0),
+                    "skip": _bool(8),
+                    "priority": _cell(9) or "normal",
+                    "green_threshold": _float_val(10, 95.0),
+                    "amber_threshold": _float_val(11, 90.0),
                 }
 
             return result

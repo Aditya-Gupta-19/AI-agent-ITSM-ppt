@@ -62,8 +62,8 @@ def _ensure_sample_excel_exists(excel_path: str) -> None:
         ["", "Avg Resolution Days (<5)", "Average calendar days from problem creation to closure", "Measured from problem record creation date to closure date"],
         ["", "Recurring Issues (<3)", "Number of issues recurring more than once in the period", "Incidents with same root cause appearing repeatedly; trend indicator"],
         ["", "Problems Aged >30 days (<5)", "Number of open problems older than 30 calendar days", "Aged problems requiring escalation and management review"],
-        # Asset and Configuration Management
-        ["Asset and Configuration Management", "Total CIs", "Total number of Configuration Items in ServiceNow CMDB", "All active CI records across all classes and environments"],
+        # Asset and Configuration
+        ["Asset and Configuration", "Total CIs", "Total number of Configuration Items in ServiceNow CMDB", "All active CI records across all classes and environments"],
         ["", "CIs Verified This Week", "Number of CIs verified and validated during the reporting period", "CIs reviewed by CI owners and confirmed as accurate"],
         ["", "CI Accuracy (>95%)", "Percentage of CIs with accurate and up-to-date attribute data", "Verified through quarterly CMDB audit and weekly spot checks"],
         ["", "Orphan CIs (<10)", "Number of CIs with no parent relationship or service linkage", "CIs not linked to any business service or application in CMDB"],
@@ -167,8 +167,8 @@ def _ensure_sample_excel_exists(excel_path: str) -> None:
     ], start=2):
         ws_problem.append([wk, op, pr, np, ard, ri, aged, comment])
 
-    # --- Asset and Configuration Management (4 weekly rows + multigroup narrative columns) ---
-    ws_cmdb = wb.create_sheet("Asset and Configuration Management")
+    # --- Asset and Configuration (4 weekly rows + multigroup narrative columns) ---
+    ws_cmdb = wb.create_sheet("Asset and Configuration")
     ws_cmdb.append([
         "Week No", "Total CIs", "CIs Verified This Week",
         "CI Accuracy (>95%)",
@@ -283,10 +283,10 @@ def _ensure_sample_excel_exists(excel_path: str) -> None:
     from openpyxl.styles import Font, PatternFill
     hdr_fill = PatternFill(fill_type="solid", fgColor="1F3864")
     hdr_font = Font(bold=True, color="FFFFFF")
-    # Columns 0-10 same as before; columns 11-12 are the RAG threshold definitions
+    # Max 2 charts per slide; columns 10-11 are the RAG threshold definitions
     headers_cfg = [
         "Team Name", "Chart 1 Type", "Chart 1 Columns",
-        "Chart 2 Type", "Chart 2 Columns", "Chart 3 Type",
+        "Chart 2 Type", "Chart 2 Columns",
         "Slide Layout", "Summary Mode", "Include Insights",
         "Skip This Team", "Priority",
         "Green Threshold (%)", "Amber Threshold (%)",
@@ -296,19 +296,19 @@ def _ensure_sample_excel_exists(excel_path: str) -> None:
         cell.fill = hdr_fill
         cell.font = hdr_font
 
-    # fmt: [team, c1type, c1cols, c2type, c2cols, c3type, layout, sum_mode, insights, skip, prio, green, amber]
+    # fmt: [team, c1type, c1cols, c2type, c2cols, layout, sum_mode, insights, skip, prio, green, amber]
     default_rows = [
-        ["MIM",          "grouped_bar",   "auto", "line",         "auto", "simple_bar",  "standard",   "ai_write", "yes", "no", "normal", 99, 95],
-        ["Change",       "bar_line_combo","auto", "grouped_bar",  "auto", "line",         "standard",   "ai_write", "yes", "no", "normal", 99, 95],
-        ["Problem",      "grouped_bar",   "auto", "line",         "auto", "simple_bar",  "standard",   "ai_write", "yes", "no", "normal", 95, 90],
-        ["Asset and Configuration Management", "auto", "auto", "", "", "", "multigroup", "ai_write", "yes", "no", "normal", 95, 90],
-        ["NOC",          "bar_dotted_line","auto","grouped_bar",  "auto", "",             "standard",   "ai_write", "yes", "no", "normal", 95, 90],
-        ["Monitoring",   "auto",          "auto", "",             "",     "",             "standard",   "ai_write", "yes", "no", "normal", 95, 90],
-        ["ITOR",         "auto",          "auto", "",             "",     "",             "standard",   "ai_write", "yes", "no", "normal", 95, 90],
-        ["APAC SD",      "auto",          "auto", "",             "",     "",             "standard",   "ai_write", "yes", "no", "normal", 80, 70],
-        ["EMEA SD",      "auto",          "auto", "",             "",     "",             "standard",   "ai_write", "yes", "no", "normal", 80, 70],
-        ["ServiceNow",   "bar_line_combo","auto", "line",         "auto", "",             "standard",   "ai_write", "yes", "no", "normal", 95, 90],
-        ["Service Desk", "grouped_bar",   "auto", "bar_dotted_line","auto","",            "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["MIM",          "grouped_bar",    "auto", "line",          "auto", "standard",   "ai_write", "yes", "no", "normal", 99, 95],
+        ["Change",       "bar_line_combo", "auto", "grouped_bar",   "auto", "standard",   "ai_write", "yes", "no", "normal", 99, 95],
+        ["Problem",      "grouped_bar",    "auto", "line",          "auto", "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["Asset and Configuration", "auto", "auto", "", "", "multigroup", "ai_write", "yes", "no", "normal", 95, 90],
+        ["NOC",          "bar_dotted_line","auto", "grouped_bar",   "auto", "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["Monitoring",   "auto",           "auto", "",              "",     "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["ITOR",         "auto",           "auto", "",              "",     "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["APAC SD",      "auto",           "auto", "",              "",     "standard",   "ai_write", "yes", "no", "normal", 80, 70],
+        ["EMEA SD",      "auto",           "auto", "",              "",     "standard",   "ai_write", "yes", "no", "normal", 80, 70],
+        ["ServiceNow",   "bar_line_combo", "auto", "line",          "auto", "standard",   "ai_write", "yes", "no", "normal", 95, 90],
+        ["Service Desk", "grouped_bar",    "auto", "bar_dotted_line","auto","standard",   "ai_write", "yes", "no", "normal", 95, 90],
     ]
     for row in default_rows:
         ws_cfg.append(row)

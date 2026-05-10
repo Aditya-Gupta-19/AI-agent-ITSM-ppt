@@ -73,6 +73,33 @@ class ReportOrchestrator:
         return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
 
     @staticmethod
+    def _resolve_team_config(sheet_name: str, report_config: dict) -> dict:
+        """
+        Look up report_config for sheet_name with fuzzy fallback.
+        Handles the Excel 31-char sheet name truncation: if the exact key is
+        missing, try the longest config key that the sheet_name starts with
+        (prefix match, case-insensitive, min 10 chars).
+        """
+        if not sheet_name or not report_config:
+            return {}
+        # Exact match first.
+        exact = report_config.get(sheet_name)
+        if exact is not None:
+            return exact
+        sn_lower = sheet_name.lower().strip()
+        best_key, best_len = None, 0
+        for key in report_config:
+            kl = key.lower().strip()
+            min_len = min(len(sn_lower), len(kl))
+            if min_len < 10:
+                continue
+            # sheet_name starts with key prefix OR key starts with sheet_name
+            if sn_lower.startswith(kl[:min_len]) or kl.startswith(sn_lower[:min_len]):
+                if min_len > best_len:
+                    best_key, best_len = key, min_len
+        return report_config.get(best_key, {}) if best_key else {}
+
+    @staticmethod
     def _deduplicate_sheets(sheet_names: list) -> list:
         """Skip 'MIM1' if 'MIM' exists; 'MIM (2)' if 'MIM' exists."""
         base_names = set()
@@ -99,14 +126,23 @@ class ReportOrchestrator:
         excel_summary_max_chars: int,
     ) -> Optional[Dict[str, Any]]:
         """Process one sheet: KPI eval + AI + charts. Returns slide item or None if empty."""
+        # Ghost-slide guard: skip blank sheet names
+        if not sheet_name or str(sheet_name).strip().lower() in ("", "nan"):
+            return None
+
         is_empty = bool(sheet_info.get("is_empty"))
         row_count = int(sheet_info.get("row_count", 0) or 0)
         df = sheet_info.get("dataframe")
         if is_empty or row_count == 0 or df is None or df.empty:
             self.logger.info(f"Skipping sheet '{sheet_name}' (empty).")
             return None
+        # Drop all-NaN rows; re-check after cleaning
+        df = df.dropna(how="all")
+        if df.empty:
+            self.logger.info(f"Skipping sheet '{sheet_name}' (all rows empty after cleaning).")
+            return None
 
-        team_config = report_config.get(sheet_name, {})
+        team_config = self._resolve_team_config(sheet_name, report_config)
         layout = team_config.get("layout", "standard")
         rag_thresholds = {
             "green": float(team_config.get("green_threshold", 95.0)),
@@ -251,7 +287,7 @@ class ReportOrchestrator:
             for sheet_name, sheet_info in sheets_data.items():
                 # Include team's report_config in the hash so chart-type changes
                 # only trigger that specific team's slide, not all teams.
-                team_cfg = report_config.get(sheet_name) if sheet_name not in sheets_to_skip else None
+                team_cfg = self._resolve_team_config(sheet_name, report_config) if sheet_name not in sheets_to_skip else None
                 current_hashes[sheet_name] = self._hash_sheet(sheet_info, team_cfg)
 
             kpi_changed = prev_hashes.get(kpi_sheet_name) != current_hashes.get(kpi_sheet_name)
@@ -284,13 +320,15 @@ class ReportOrchestrator:
             # Step 3: Collect sheets to process, then run all in parallel.
             processable_items = []
             for sheet_name, sheet_info in sheets_data.items():
+                if not sheet_name or str(sheet_name).strip().lower() in ("", "nan"):
+                    continue
                 if sheet_name in sheets_to_skip:
                     self.logger.info(f"Skipping sheet '{sheet_name}' (in skip list).")
                     slides_skipped += 1
                     continue
                 if sheet_name not in changed_sheets:
                     continue
-                team_config = report_config.get(sheet_name, {})
+                team_config = self._resolve_team_config(sheet_name, report_config)
                 if team_config.get("skip", False):
                     self.logger.info(f"Skipping '{sheet_name}' (Report_Config skip=yes).")
                     slides_skipped += 1
